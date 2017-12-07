@@ -93,7 +93,7 @@ static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 #define DEFAULT_ABOVE_HISPEED_DELAY DEFAULT_TIMER_RATE
 static unsigned int default_above_hispeed_delay[] = {
 	DEFAULT_ABOVE_HISPEED_DELAY };
-#define DEFAULT_SCREEN_OFF_MAX 1555200
+#define DEFAULT_SCREEN_OFF_MAX 652800
 
 struct cpufreq_electron_tunables {
 	int usage_count;
@@ -1212,9 +1212,9 @@ static ssize_t store_screen_off_maxfreq(struct cpufreq_electron_tunables *tunabl
 	int ret;
 	unsigned long val;
 
-	ret = strict_strtoul(buf, 0, &val);
+	ret = kstrtoul(buf, 0, &val);
 	if (ret < 0) return ret;
-	if (val < 384000) tunables->screen_off_maxfreq = DEFAULT_SCREEN_OFF_MAX;
+	if (val < 652800) tunables->screen_off_maxfreq = DEFAULT_SCREEN_OFF_MAX;
 	else tunables->screen_off_maxfreq = val;
 	return count;
 }
