@@ -58,7 +58,10 @@ static DEFINE_SPINLOCK(suspend_lock);
 
 #define TAG "msm_adreno_tz: "
 
-static unsigned int adrenoboost = 10000;
+#if 1
+static unsigned int adrenoboost = 1;
+#endif
+
 static u64 suspend_time;
 static u64 suspend_start;
 static unsigned long acc_total, acc_relative_busy;
@@ -89,6 +92,7 @@ u64 suspend_time_ms(void)
 	return time_diff;
 }
 
+#if 1
 static ssize_t adrenoboost_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -103,7 +107,7 @@ static ssize_t adrenoboost_save(struct device *dev,
 {
 	int input;
 	sscanf(buf, "%d ", &input);
-	if (input < 0 || input > 50000) {
+	if (input < 0 || input > 3) {
 		adrenoboost = 0;
 	} else {
 		adrenoboost = input;
@@ -111,7 +115,7 @@ static ssize_t adrenoboost_save(struct device *dev,
 
 	return count;
 }
-
+#endif
 
 static ssize_t gpu_load_show(struct device *dev,
 		struct device_attribute *attr,
@@ -159,8 +163,10 @@ static ssize_t suspend_time_show(struct device *dev,
 	return snprintf(buf, PAGE_SIZE, "%llu\n", time_diff);
 }
 
+#if 1
 static DEVICE_ATTR(adrenoboost, 0644,
 		adrenoboost_show, adrenoboost_save);
+#endif
 
 static DEVICE_ATTR(gpu_load, 0444, gpu_load_show, NULL);
 
@@ -171,7 +177,9 @@ static DEVICE_ATTR(suspend_time, 0444,
 static const struct device_attribute *adreno_tz_attr_list[] = {
 		&dev_attr_gpu_load,
 		&dev_attr_suspend_time,
+#if 1
 		&dev_attr_adrenoboost,
+#endif
 		NULL
 };
 
@@ -386,7 +394,27 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 
 	*freq = stats.current_frequency;
 	priv->bin.total_time += stats.total_time;
+#if 1
+	// scale busy time up based on adrenoboost parameter, only if MIN_BUSY exceeded...
+	if ((unsigned int)(priv->bin.busy_time + stats.busy_time) >= MIN_BUSY) {
+		// only if enough cycles_without_boost passed, or already in a boost_period
+		if (priv->bin.cycles_without_boost++<(3 + ((priv->bin.last_level*6)/max_state_val)) && !priv->bin.boost_period) {
+			priv->bin.busy_time += stats.busy_time;
+		} else {
+			// reset cycles_without_boost to 0
+			priv->bin.cycles_without_boost = 0;
+			// if boost_period just started set it to boost period length, or decrease it
+			if (priv->bin.boost_period == 0) priv->bin.boost_period = 6 - ((priv->bin.last_level*4)/max_state_val); else priv->bin.boost_period--;
+			priv->bin.busy_time += stats.busy_time * ( 1 + (adrenoboost*10) / (8 + ((max_state_val+1)/(priv->bin.last_level+1)) ) );
+		}
+	} else {
+		priv->bin.busy_time += stats.busy_time;
+		priv->bin.cycles_without_boost = 0;
+		priv->bin.boost_period = 0;
+	}
+#else
 	priv->bin.busy_time += stats.busy_time;
+#endif
 
 	if (stats.private_data)
 		context_count =  *((int *)stats.private_data);
@@ -410,6 +438,7 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 		pr_err(TAG "bad freq %ld\n", stats.current_frequency);
 		return level;
 	}
+//	printk("%s level = %d total=%d busy=%d\n", __func__, level, (int)priv->bin.total_time, (int)priv->bin.busy_time, (int) priv->bin.busy_time, (int)stats.busy_time);
 
 	/*
 	 * If there is an extended block of busy processing,
@@ -441,6 +470,9 @@ printk("level = %d total=%d busy=%d\n", level, (int)priv->bin.total_time, (int)p
 		level = max(level, 0);
 		level = min_t(int, level, devfreq->profile->max_state - 1);
 	}
+#if 1
+	priv->bin.last_level = level;
+#endif
 
 	*freq = devfreq->profile->freq_table[level];
 	return 0;
