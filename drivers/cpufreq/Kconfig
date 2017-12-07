@@ -170,6 +170,13 @@ config CPU_FREQ_DEFAULT_GOV_ELECTRON
 	  you to get a full dynamic cpu frequency capable system by simply
 	  loading your cpufreq low-level hardware driver, using the
 	  'electron' governor for latency-sensitive workloads.
+
+config CPU_FREQ_DEFAULT_GOV_SMARTMAX_EPS 
+        bool "smartmax_eps" 
+        select CPU_FREQ_GOV_SMARTMAX_EPS 
+        help 
+          Use the CPUFreq governor 'smartmax eps' as default 
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -310,6 +317,12 @@ config CPU_FREQ_GOV_DESPAIR
 
 comment "CPU frequency scaling drivers"
 
+config CPU_FREQ_GOV_SMARTMAX_EPS 
+    tristate "'smartmax EPS' cpufreq policy governor" 
+    select CPU_FREQ_TABLE 
+    help 
+      'smartmax EPS' is the extreme powersaving version of smartmax 
+ 
 config CPUFREQ_DT
 	tristate "Generic DT based cpufreq driver"
 	depends on HAVE_CLK && OF
