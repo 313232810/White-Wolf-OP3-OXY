@@ -1198,7 +1198,7 @@ static void gesture_judge(struct synaptics_ts_data *ts)
 				(gesture_buffer[2] == 0x73) ? Sgestrue :
 				UnkownGestrue;
 	}
-/*
+
 	keyCode = UnkownGestrue;
 	switch (gesture) {
 		case DouTap:
@@ -1234,7 +1234,7 @@ static void gesture_judge(struct synaptics_ts_data *ts)
 		default:
 			break;
 	}
-*/
+
 	TPD_ERR("detect %s gesture\n", gesture == DouTap ? "(double tap)" :
 			gesture == UpVee ? "(V)" :
 			gesture == DownVee ? "(^)" :
@@ -4495,12 +4495,11 @@ static int fb_notifier_callback(struct notifier_block *self, unsigned long event
 				atomic_set(&ts->is_stop, 1);
 				if (!(ts->gesture_enable))
 					touch_disable(ts);
-				}
-                synaptics_ts_suspend(&ts->client->dev);
-				TPD_DEBUG("%s : going TP suspend end\n", __func__);
+				synaptics_ts_suspend(&ts->client->dev);
+				TPD_DEBUG("%s : going TP suspend end\n",
+				    __func__);
 				set_fingerprintd_nice(MIN_NICE);
-				
-            }
+			}
 		}
 	}
 	return 0;
