@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 3.18.86 Kernel Configuration
+# Linux/arm64 3.18.92 Kernel Configuration
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -4594,3 +4594,4 @@ CONFIG_BOEFFLA_TOUCH_KEY_CONTROL=y
 CONFIG_CPU_INPUT_BOOST=y 
 CONFIG_FORCE_FAST_CHARGE=y 
 CONFIG_CRYPTO_CRC32_ARM64=y 
+CONFIG_BOEFFLA_WL_BLOCKER=y
