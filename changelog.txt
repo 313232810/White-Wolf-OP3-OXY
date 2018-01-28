@@ -1,6 +1,45 @@
 
 Project name: White-Wolf-OP3-OXY
 
+28/01/2018
+
+  * yarpiin_defconfig: enable boeffla wl_blocker (Slawek) [da3bbd8]
+  * wl_blocker: add more wakelocks to the default block list (Francisco Franco) [47a5639]
+  * boeffla_wl_blocker: update to wakelock blocker driver v1.1.0 (andip71) [d5bc8b8]
+  * boeffla_wl_blocker: update to wakelock blocker driver v1.0.1 (andip71) [74f5319]
+  * boeffla_wl_blocker: add generic wakelock blocker driver v1.0.0 (andip71) [64ae85d]
+  * Revert "wakeup: add toggle for bluedroid_timer wakelock" (franciscofranco) [61079a4]
+  * Revert "wakeup: add toggle for bluesleep wakelock" (franciscofranco) [dca743d]
+  * Revert "wakeup: try to deactivate a wakeup source when the user explicitly disables it from userspace" (franciscofranco) [efda1e9]
+  * Revert "drivers: wakeup: add toggles for wlan_wow_wl and wlan wakelocks" (Francisco Franco) [a3f047a]
+  * Revert "drivers: wakeup: remove bluesleep setting, it breaks everything if disabled" (Francisco Franco) [eee1f65]
+  * Revert "drivers: wakeup: using strncmp instead of strcmp, it's fucking safer" (Francisco Franco) [00fe75d]
+  * Revert "power: wakeup: only try to deactivate if the wakeup source is active" (Francisco Franco) [ee4ec25]
+  * Revert "power: wakeup: add ipa_ws option" (Francisco Franco) [30a1532]
+  * Revert "drivers: wakeup: add qcom_rx_wakelock wakeup bypass option" (Francisco Franco) [9a2893b]
+  * Revert "drivers: wakeup: squash wakelock blocking improvements from https://github.com/franciscofranco/one_plus_3T/commits/nougat-mr1/drivers/base/power/wakeup.c" (Francisco Franco) [225dd64]
+  * interactive: avoid calling usecs_to_jiffies() repeatedly (Park Ju Hyung) [c8fd3c0]
+  * drivers: cpufreq_interactive: handle error for module load fail (gaurav jindal) [cc85bd9]
+  * cpufreq: interactive: Remove the jump_to_max hack (Christopher R. Palmer) [dd98f7b]
+  * cpufreq: interactive: fix to come out of hysteresis mode (Ramakrishna Gottimukkula) [c92c3d7]
+  * cpufreq_interactive: Allow hispeed_freq to work with prediction (Rohit Gupta) [ebd68d9]
+  * arm64: lib: memory utilities optimization (Francisco Franco) [46d6dde]
+  * sched/completion: Add lock-free checking of the blocking case (Nicholas Mc Guire) [11a332a9]
+  * sched/deadline: Avoid pointless __setscheduler() (Wanpeng Li) [eced44c]
+  * sched/wait: Fix a kthread race with wait_woken() (Peter Zijlstra) [e58c87f]
+  * vmstat: Reduce time interval to stat update on idle cpu (Christoph Lameter) [58cdc8a]
+  * arm64: lib: improve copy_page to deal with 128 bytes at a time (Will Deacon) [1fa2c00]
+  * cpufreq: set policy with user_policy data (Lianwei Wang) [7cb74f0]
+  * Enable SW-CRC Toggle Switch (Rahul Patel) [6e6d533]
+  * power: msm-core: Remove temperature polling (Sultanxda) [67bb4b5]
+  * arch: arm/arm64: silence some log spam (Nathan Chancellor) [262d329]
+  * kernel: cpu: disable some log spam (Nathan Chancellor) [636853d]
+  * adrenoboost: disable by default (flar2) [7a43545]
+  * PM / devfreq: Restart previous governor if new governor fails to start (Saravana Kannan) [c6c5fff]
+  * PM / devfreq: Skip status update on uninitialized previous_freq (Tobias Jakobi) [5c97125]
+  * PM / devfreq: Add proper locking around list_del() (Axel Lin) [08b16de]
+  * Input: bring back gesture fix (Slawek) [99653f4]
+
 21/01/2018
 
   * Revert "net: ipv4: fix for a race condition in raw_sendmsg" (Mohamed Ghannam) [8298e77]
