@@ -3425,7 +3425,6 @@ static int set_usb_current_limit_vote_cb(struct votable *votable,
 	}
 
 	effective_client = get_effective_client_locked(chip->usb_icl_votable);
-
 	/* disable parallel charging if HVDCP is voting for 300mA */
 	if (effective_client && strcmp(effective_client, HVDCP_ICL_VOTER) == 0)
 		smbchg_parallel_usb_disable(chip);
